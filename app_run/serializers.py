@@ -3,21 +3,19 @@ from .models import Run
 from django.contrib.auth.models import User
 
 
-class AthleteSerializer(serializers.ModelSerializer):
-    athlete_data = serializers.SerializerMethodField()
+
+
+class AthleteDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'last_name', 'first_name', 'athlete_data']
-
-    def get_athlete_data(self,obj):
-        return 'athlete_data' if obj else 'athlete_data'
+        fields = ['id', 'username', 'last_name', 'first_name']
 
 class RunSerializer(serializers.ModelSerializer):
-    athlete = AthleteSerializer()
+    athlete_data = AthleteDataSerializer(source='athlete', read_only=True)
+
     class Meta:
         model = Run
-        fields = ['id','athlete', 'comment', 'created_at']
-
+        fields = ['id', 'athlete', 'comment', 'created_at', 'athlete_data']
 
 
 

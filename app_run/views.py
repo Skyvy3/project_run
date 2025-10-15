@@ -1,10 +1,8 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from urllib3 import request
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .models import Run
