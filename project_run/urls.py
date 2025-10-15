@@ -13,5 +13,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/company_details/', api_endpoint),
     path('', include(router.urls)),
-
+    # path('api/runs/<int:run_id>/start/',  name='run-start'),
+    # path('api/runs/<int:run_id>/stop/',  name='run-stop'),
 ]
