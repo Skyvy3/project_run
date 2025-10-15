@@ -22,6 +22,7 @@ class RunSerializer(serializers.ModelSerializer):
 
 class UsersSerializers(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()#Вычисляю поле type
+    runs_finished = serializers.SerializerMethodField()
     class Meta:
         model = User
         fields = ['id', 'date_joined', 'username', 'last_name', 'first_name', 'type', 'runs_finished']
