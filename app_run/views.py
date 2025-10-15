@@ -40,7 +40,12 @@ class RunViewSet(viewsets.ModelViewSet):
     ordering_filter = ['created_at']
     pagination_class = RunsUsersPagination
 
-
+    def paginate_queryset(self, queryset):
+        # Применяем пагинацию ТОЛЬКО если передан параметр 'size'
+        if self.request.query_params.get('size') is not None:
+            return super().paginate_queryset(queryset)
+        # Иначе — отключаем пагинацию
+        return None
 
 class Users(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
