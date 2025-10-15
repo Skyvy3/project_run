@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+#Mодель забега
 class Run(models.Model):
     athlete = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField(blank=True)
