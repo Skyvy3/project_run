@@ -11,4 +11,4 @@ def api_endpoint(request):
     context = {'company_name': settings.COMPANY_NAME,
                'slogan': settings.SLOGAN,
                'contacts': settings.CONTACTS}
-    return Response({'context': context})
+    return Response(context)
