@@ -64,6 +64,13 @@ class Users(ReadOnlyModelViewSet):
 
         return queryset
 
+    def paginate_queryset(self, queryset):
+        # Применяем пагинацию ТОЛЬКО если передан параметр 'size'
+        if self.request.query_params.get('size') is not None:
+            return super().paginate_queryset(queryset)
+        # Иначе — отключаем пагинацию
+        return None
+
 
 class StartRunView(APIView):
     def post(self, request, run_id):
