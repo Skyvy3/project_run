@@ -21,7 +21,7 @@ def api_endpoint(request):
 
 
 class RunViewSet(viewsets.ModelViewSet):
-    queryset = Run.objects.select_related('athlete_data').all()
+    queryset = Run.objects.select_related('athlete').all()
     serializer_class = RunSerializer
 
 #

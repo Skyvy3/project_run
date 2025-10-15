@@ -9,8 +9,8 @@ class AthleteSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'last_name', 'first_name', 'athlete_data']
 
-
-
+    def get_athlete_data(self,obj):
+        return 'athlete_data' if obj else 'athlete_data'
 
 class RunSerializer(serializers.ModelSerializer):
     athlete = AthleteSerializer()
