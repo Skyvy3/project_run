@@ -115,8 +115,7 @@ STATIC_ROOT = 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MY_SITE = {
-    'company_name': 'SkyfЫ',
-    'slogan': 'Сегодня, завтра, и всегда СКУФОМ стать в сердечке навсегда',
-    'contacts': 'Tg  Skyvy_1'
-}
+
+COMPANY_NAME = 'SkyfЫ'
+SLOGAN = 'Сегодня, завтра, и всегда СКУФОМ стать в сердечке навсегда'
+CONTACTS = 'Tg Skyvy_1'
