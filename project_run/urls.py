@@ -13,6 +13,6 @@ urlpatterns = {
     path('admin/', admin.site.urls),
     path('api/company_details/', api_endpoint),
     path('', include(router.urls)),
-    path('api/runs/<int:run_id>/start/', StartRunView.as_view(), name='run-start'),
-    path('api/runs/<int:run_id>/stop/',StopRunView.as_view(), name='run-stop'),
+    path('api/runs/<int:run_id>/start/', StartRunView.as_view()),
+    path('api/runs/<int:run_id>/stop/', StopRunView.as_view()),
 }

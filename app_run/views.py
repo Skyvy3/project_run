@@ -51,10 +51,7 @@ class Users(ReadOnlyModelViewSet):
 
 
 class StartRunView(APIView):
-    """
-    POST /api/runs/{run_id}/start/
-    Переводит забег в статус 'in_progress'
-    """
+
     def post(self, request, run_id):
         run = get_object_or_404(Run, id=run_id)
 
@@ -75,10 +72,7 @@ class StartRunView(APIView):
 
 
 class StopRunView(APIView):
-    """
-    POST /api/runs/{run_id}/stop/
-    Переводит забег в статус 'finished'
-    """
+
     def post(self, request, run_id):
         run = get_object_or_404(Run, id=run_id)
 
