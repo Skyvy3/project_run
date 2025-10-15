@@ -9,10 +9,10 @@ router.register('api/runs', RunViewSet)
 router.register('api/users', Users, basename='users')
 
 
-urlpatterns = {
+urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/company_details/', api_endpoint),
     path('', include(router.urls)),
     path('api/runs/<int:run_id>/start/', StartRunView.as_view()),
     path('api/runs/<int:run_id>/stop/', StopRunView.as_view()),
-}
+]
