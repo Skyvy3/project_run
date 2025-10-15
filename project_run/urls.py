@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from app_run.views import api_endpoint, RunViewSet
+from app_run.views import api_endpoint, RunViewSet, Users
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
 router.register('api/runs', RunViewSet)
+router.register('api/users', Users, basename='users')
 
 
 urlpatterns = [
