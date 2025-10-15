@@ -9,7 +9,7 @@ RUN_STATUS_CHOICES = [
 ]
 
 class Run(models.Model):
-    athlete = models.ForeignKey(User, on_delete=models.CASCADE)
+    athlete = models.ForeignKey(User, on_delete=models.CASCADE, related_name='runs')
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
