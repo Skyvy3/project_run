@@ -25,9 +25,10 @@ def api_endpoint(request):
 
 #Пагинация
 class RunsUsersPagination(PageNumberPagination):
-    page_size = 5
-    page_query_param = 'size'
+    page_size = 10  # значение по умолчанию, если не указан size
+    page_size_query_param = 'size'  # ← параметр для изменения размера страницы
     max_page_size = 50
+    page_query_param = 'page'
 
 
 
