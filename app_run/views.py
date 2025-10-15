@@ -1,4 +1,3 @@
-from email.policy import default
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -9,8 +8,6 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter
-from urllib3 import request
-
 from .models import Run
 from rest_framework import viewsets, status
 from app_run.serializers import RunSerializer,UsersSerializers
@@ -51,42 +48,39 @@ class Users(ReadOnlyModelViewSet):
 
 
 class StartRunView(APIView):
-
     def post(self, request, run_id):
         run = get_object_or_404(Run, id=run_id)
 
-        if run.status != Run.Status.INIT:
+        if run.status != 'init':
             return Response(
                 {'error': 'Run has already been started or finished.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        run.status = Run.Status.IN_PROGRESS
+        run.status = 'in_progress'
         run.save(update_fields=['status'])
 
         return Response({
-            'message': 'Run started successfully',
+            'message': 'Run started',
             'run_id': run.id,
             'status': run.status
-        }, status=status.HTTP_200_OK)
-
+        })
 
 class StopRunView(APIView):
-
     def post(self, request, run_id):
         run = get_object_or_404(Run, id=run_id)
 
-        if run.status != Run.status.IN_PROGRESS:
+        if run.status != 'in_progress':
             return Response(
-                {'error': 'Run is not in progress. Cannot stop.'},
+                {'error': 'Run is not in progress.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        run.status = Run.status.FINISHED
+        run.status = 'finished'
         run.save(update_fields=['status'])
 
         return Response({
-            'message': 'Run stopped successfully',
+            'message': 'Run stopped',
             'run_id': run.id,
             'status': run.status
-        }, status=status.HTTP_200_OK)
+        })
