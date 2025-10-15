@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
+from rest_framework.filters import SearchFilter
 from .models import Run
 from rest_framework import viewsets
 from app_run.serializers import RunSerializer,UsersSerializers
@@ -27,6 +27,10 @@ class RunViewSet(viewsets.ModelViewSet):
 class Users(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = UsersSerializers
+
+    filter_backends = [SearchFilter]
+    search_fields = ['first_name', 'last_name']
+
     def get_queryset(self):
         queryset = User.objects.filter(is_superuser=False)
 
