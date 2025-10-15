@@ -15,8 +15,7 @@ class RunSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Run
-        fields = ['id', 'athlete', 'comment', 'created_at', 'athlete_data']
-        read_only_fields = ['status']  # статус меняется только через /start/ и /stop/
+        fields = ['id', 'athlete', 'comment', 'created_at', 'athlete_data', 'status']
 
 
 
