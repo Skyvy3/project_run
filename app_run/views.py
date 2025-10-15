@@ -2,12 +2,14 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import Run
 from rest_framework import viewsets, status
 from app_run.serializers import RunSerializer,UsersSerializers
@@ -21,18 +23,33 @@ def api_endpoint(request):
     return Response(context)
 
 
+#Пагинация
+class RunsUsersPagination(PageNumberPagination):
+    page_size = 5
+    page_query_param = 'size'
+    max_page_size = 50
+
+
+
 class RunViewSet(viewsets.ModelViewSet):
     queryset = Run.objects.select_related('athlete').all()
     serializer_class = RunSerializer
+    filter_backends = [DjangoFilterBackend,OrderingFilter]
+    filter_fields = ['status', 'athlete']
+    ordering_filter = ['created_at']
+    pagination_class = RunsUsersPagination
 
-#
+
 
 class Users(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = UsersSerializers
 
-    filter_backends = [SearchFilter]
+    filter_backends = [SearchFilter,OrderingFilter]
     search_fields = ['first_name', 'last_name']
+    ordering_fields = ['date_joined']
+    pagination_class = RunsUsersPagination
+
 
     def get_queryset(self):
         queryset = User.objects.filter(is_superuser=False)
