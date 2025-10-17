@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Run
+from .models import Run, AthleteInfo
 from django.contrib.auth.models import User
 
 
@@ -33,3 +33,15 @@ class UsersSerializers(serializers.ModelSerializer):
     def get_runs_finished(self, obj):
         # obj — это User
         return obj.runs.filter(status='finished').count()
+
+class AthleteInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AthleteInfo
+        fields = ['weight', 'goals', 'user_id']
+        read_only_fields = ['user_id']
+
+    def validate_weight(self, value):
+        if value is not None:
+            if not (0 < value < 900):
+                raise serializers.ValidationError("Weight must be between 0 and 900.")
+        return value

@@ -11,9 +11,9 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter, OrderingFilter
-from .models import Run
+from .models import Run, AthleteInfo
 from rest_framework import viewsets, status
-from app_run.serializers import RunSerializer,UsersSerializers
+from app_run.serializers import RunSerializer,UsersSerializers, AthleteInfoSerializer
 
 #Самый простой Апи эндпоинт который отдает JSON
 @api_view(['GET'])
@@ -117,3 +117,22 @@ class StopRunView(APIView):
             'run_id': run.id,
             'status': run.status
         })
+
+class AthleteInfoView(APIView):
+    def get_athlete_info(self, user_id):
+        user = get_object_or_404(User, pk=user_id)
+        athlete_info, created = AthleteInfo.objects.get_or_create(user=user)
+        return athlete_info
+
+    def get(self, request, user_id):
+        athlete_info = self.get_athlete_info(user_id)
+        serializer = AthleteInfoSerializer(athlete_info)
+        return Response(serializer.data)
+
+    def put(self, request, user_id):
+        athlete_info = self.get_athlete_info(user_id)
+        serializer = AthleteInfoSerializer(athlete_info, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

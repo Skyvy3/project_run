@@ -17,3 +17,11 @@ class Run(models.Model):
         choices=RUN_STATUS_CHOICES,
         default='init'
     )
+
+class AthleteInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='athlete_info')
+    weight = models.FloatField(null=True, blank=True)
+    goals = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"AthleteInfo for {self.user.username}"
