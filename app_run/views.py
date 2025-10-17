@@ -131,12 +131,26 @@ class StopRunView(APIView):
             'status': run.status
         })
 
-class ChallengeViewSet(ReadOnlyModelViewSet):
-    queryset = Challenge.objects.select_related('athlete').all()
-    serializer_class = ChallengeSerializer
-    permission_classes = [AllowAny]
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['athlete']
+
+class ChallengeListView(APIView):
+    def get(self, request):
+        athlete_id = request.query_params.get('athlete')
+
+        if athlete_id is not None:
+            try:
+                athlete_id = int(athlete_id)
+                # Проверяем, существует ли такой пользователь
+                User.objects.get(id=athlete_id)
+            except (ValueError, User.DoesNotExist):
+                return Response([])  # или 404 — но по ТЗ лучше пустой список
+
+        queryset = Challenge.objects.all()
+
+        if athlete_id is not None:
+            queryset = queryset.filter(athlete_id=athlete_id)
+
+        serializer = ChallengeSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 
