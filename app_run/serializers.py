@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Run, AthleteInfo
+from .models import Run, AthleteInfo, Challenge
 from django.contrib.auth.models import User
 
 
@@ -45,3 +45,10 @@ class AthleteInfoSerializer(serializers.ModelSerializer):
             if not (0 < value < 900):
                 raise serializers.ValidationError("Weight must be between 0 and 900.")
         return value
+
+class ChallengeSerializer(serializers.ModelSerializer):
+    athlete = serializers.IntegerField(source='athlete.id')
+
+    class Meta:
+        model = Challenge
+        fields = ['full_name', 'athlete']

@@ -11,9 +11,9 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter, OrderingFilter
-from .models import Run, AthleteInfo
+from .models import Run, AthleteInfo, Challenge
 from rest_framework import viewsets, status
-from app_run.serializers import RunSerializer,UsersSerializers, AthleteInfoSerializer
+from app_run.serializers import RunSerializer,UsersSerializers, AthleteInfoSerializer, ChallengeSerializer
 
 #Самый простой Апи эндпоинт который отдает JSON
 @api_view(['GET'])
@@ -112,11 +112,40 @@ class StopRunView(APIView):
         run.status = 'finished'
         run.save(update_fields=['status'])
 
+        # === НОВАЯ ЛОГИКА: проверка на 10 завершённых забегов ===
+        finished_runs_count = Run.objects.filter(
+            athlete=run.athlete,
+            status='finished'
+        ).count()
+
+        if finished_runs_count >= 10:
+            Challenge.objects.get_or_create(
+                athlete=run.athlete,
+                full_name="Сделай 10 Забегов!"
+            )
+        # ======================================================
+
         return Response({
             'message': 'Run stopped',
             'run_id': run.id,
             'status': run.status
         })
+
+class ChallengeViewSet(ReadOnlyModelViewSet):
+    queryset = Challenge.objects.select_related('athlete').all()
+    serializer_class = ChallengeSerializer
+    permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['athlete']
+
+    class ChallengeViewSet(ReadOnlyModelViewSet):
+        queryset = Challenge.objects.select_related('athlete').all()
+        serializer_class = ChallengeSerializer
+        permission_classes = [AllowAny]
+        filter_backends = [DjangoFilterBackend]
+        filterset_fields = ['athlete']
+
+
 
 class AthleteInfoView(APIView):
     def get_athlete_info(self, user_id):

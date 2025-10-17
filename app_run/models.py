@@ -25,3 +25,7 @@ class AthleteInfo(models.Model):
 
     def __str__(self):
         return f"AthleteInfo for {self.user.username}"
+
+class Challenge(models.Model):
+    full_name = models.CharField(max_length=123)
+    athlete = models.ForeignKey(User, on_delete=models.CASCADE)
