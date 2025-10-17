@@ -138,12 +138,7 @@ class ChallengeViewSet(ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['athlete']
 
-    class ChallengeViewSet(ReadOnlyModelViewSet):
-        queryset = Challenge.objects.select_related('athlete').all()
-        serializer_class = ChallengeSerializer
-        permission_classes = [AllowAny]
-        filter_backends = [DjangoFilterBackend]
-        filterset_fields = ['athlete']
+
 
 
 
